@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .inline{
+            margin-top: 20px;
+            float: left;
+            display: inline-block;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        .inline a {
+            padding: 8px;
+            margin: 2px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Products</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>description</th>
+        <th>unit</th>
+        <th>manufacturer</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th><button><a th:href="@{/product-add}">Add</a></button></th>
+    </tr>
+    <tr th:each="prod, iStat:${paging.content}">
+        <td th:text="${prod.id}"></td>
+        <td th:text="${prod.name}"></td>
+        <td th:text="${prod.description}"></td>
+        <td th:text="${prod.unit}"></td>
+        <td th:text="${prod.manufacturer}"></td>
+        <td th:text="${prices[iStat.index].price}"></td>
+        <td th:text="${prod.status}"></td>
+        <td>
+            <button><a th:href="@{/product-update/{id}(id=${prod.id})}">Update</a></button>
+            <button><a th:href="@{/delete-product/{id}(id=${prod.id})}">Delete</a></button>
+        </td>
+    </tr>
+</table>
+<div class="inline" th:if="${paging.totalPages>0}"
+     th:each="pageNumber, iStat:${pageNumbers}"
+>
+    <a th:href="@{/products-paging(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==paging.number+1}? active"
+    ></a>
+</div>
+</body>
+</html>

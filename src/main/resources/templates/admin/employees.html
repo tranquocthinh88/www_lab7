@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .inline{
+            margin-top: 20px;
+            float: left;
+            display: inline-block;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        .inline a {
+            padding: 8px;
+            margin: 2px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Employees</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Date of birth</th>
+        <th>Status</th>
+        <th><button><a th:href="@{/employee-add}">Add</a></button></th>
+    </tr>
+    <tr th:each="emp, iStat:${paging.content}">
+        <td th:text="${emp.id}"></td>
+        <td th:text="${emp.fullname}"></td>
+        <td th:text="${emp.phone}"></td>
+        <td th:text="${emp.email}"></td>
+        <td th:text="${emp.address}"></td>
+        <td th:text="${emp.dob}"></td>
+        <td th:text="${emp.status}"></td>
+        <td>
+            <button><a th:href="@{/employee-update/{id}(id=${emp.id})}">Update</a></button>
+            <button><a th:href="@{/delete-employee/{id}(id=${emp.id})}">Delete</a></button>
+        </td>
+    </tr>
+</table>
+<div class="inline" th:if="${paging.totalPages>0}"
+     th:each="pageNumber, iStat:${pageNumbers}"
+>
+    <a th:href="@{/employees-paging(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==paging.number+1}? active"
+    ></a>
+</div>
+</body>
+</html>
